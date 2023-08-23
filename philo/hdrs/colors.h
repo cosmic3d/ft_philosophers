@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:46:28 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/01 17:58:22 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/23 19:44:00 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define NEGRO         "\033[30m"
 # define ROJO          "\033[31m"
 # define VERDE         "\033[32m"
-# define AMARILLO      "\033[33m"
+# define GROC      "\033[33m"
 # define AZUL          "\033[34m"
 # define MAGENTA       "\033[35m"
 # define CYAN          "\033[36m"
@@ -28,7 +28,7 @@
 # define FONDO_NEGRO      "\033[40m"
 # define FONDO_ROJO       "\033[41m"
 # define FONDO_VERDE      "\033[42m"
-# define FONDO_AMARILLO   "\033[43m"
+# define FONDO_GROC   "\033[43m"
 # define FONDO_AZUL       "\033[44m"
 # define FONDO_MAGENTA    "\033[45m"
 # define FONDO_CYAN       "\033[46m"

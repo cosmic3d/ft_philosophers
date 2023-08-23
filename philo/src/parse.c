@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:44:22 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/23 00:13:17 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/23 20:14:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 int	check_input(int argc, char **argv)
 {
-
+	printf("Hola");
+	return (0);
 }
