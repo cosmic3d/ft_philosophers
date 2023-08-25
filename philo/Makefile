@@ -34,14 +34,14 @@ MAKE		= make -s
 HDRS		= $(INC_DIR)philosophers.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= philosophers.c parse.c
+SRCS		:= philosophers.c parse.c print.c utils.c
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 DEP			+= $(addsuffix .d, $(basename $(OBJS)))
 
-# -=-=-=-=-	MAKING LIBS AND COMPILING WITH THEM -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
+# -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 all: $(NAME)
 
@@ -50,7 +50,7 @@ $(NAME):
 
 $(PHILO):: $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(PHILO)
-	@echo "$(GREEN)🧠🗣PHILO COMPILED🧠🗣$(RESET)"
+	@echo "$(GREEN)🧠🗣 PHILO COMPILED🧠🗣$(RESET)"
 
 $(PHILO)::
 	@echo "$(BLUE)Nothing to be done for $@$(RESET)"
