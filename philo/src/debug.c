@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/27 20:22:57 by jenavarr         ###   ########.fr       */
+/*   Created: 2023/08/28 23:57:49 by jenavarr          #+#    #+#             */
+/*   Updated: 2023/08/29 00:09:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
-// Prints a message with a color
-int	printf_color(char *err_message, char* color)
+void	debug_philos(t_table *table)
 {
-	if (!color)
-		color = RESET;
-	if (*err_message)
+	int	i;
+
+	i = -1;
+	while (++i < table->data.philo_amount)
 	{
-		if (printf("%s%s%s", color, err_message, RESET) < 0)
-		{
-			write(1, "An error occurred while printing with printf\n", 46);
-			exit(1);
-		}
+		printf_color("PHILO: ", VERDE);
+		printf("%s%i\n", RESET, table->philos[i].id);
+		printf_color("\tState: ", GROC);
+		printf("%s%i\n", RESET, table->philos[i].state);
+		printf_color("\tLeft fork: ", GROC);
+		printf("%s%p\n", RESET, table->philos[i].leftfork);
+		printf_color("\tRight fork: ", GROC);
+		printf("%s%p\n", RESET, table->philos[i].rightfork);
 	}
-	return (0);
 }

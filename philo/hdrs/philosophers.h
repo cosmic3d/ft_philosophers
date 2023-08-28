@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/25 04:09:47 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/29 00:04:43 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include "colors.h"
+# include "messages.h"
 
 /* --------------------------------- STRUCTS -------------------------------- */
 
 typedef struct data
 {
+	int philo_amount;
 	int	death_time;
 	int	eat_time;
 	int	sleep_time;
@@ -40,6 +42,8 @@ typedef struct philo
 	pthread_t	thread;
 	pthread_mutex_t	*leftfork;
 	pthread_mutex_t	*rightfork;
+	//Add last time eaten
+	t_data *data;
 }	t_philo;
 
 
@@ -47,14 +51,17 @@ typedef struct table
 {
 	t_philo	*philos;
 	pthread_mutex_t	*forks;
+	t_data data;
+	pthread_mutex_t start_mtx;
+	pthread_mutex_t print_mtx;
 }	t_table;
 
 /* --------------------------------- STATES --------------------------------- */
 
-# define DEAD 0
-# define EATING 1
-# define SLEEPING 2
-# define THINKING 3
+# define ST_DEAD 0
+# define ST_EATING 1
+# define ST_SLEEPING 2
+# define ST_THINKING 3
 
 /* --------------------------------- FUNCS -------------------------------- */
 
@@ -68,4 +75,10 @@ int		check_input(int argc, char **argv);
 int		f_exit(char *err_message, char* color);
 //Print
 int		printf_color(char *err_message, char* color);
+//Initialize
+void	init_allocs(t_table *table, char **argv);
+int		init_mutexes(t_table *table);
+int		init_philos(t_table *table);
+//Debug
+void	debug_philos(t_table *table);
 #endif

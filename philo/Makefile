@@ -34,7 +34,7 @@ MAKE		= make -s
 HDRS		= $(INC_DIR)philosophers.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= philosophers.c parse.c print.c utils.c
+SRCS		:= philosophers.c parse.c print.c utils.c initialize.c debug.c
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 

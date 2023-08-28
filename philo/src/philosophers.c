@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 20:30:45 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/25 04:44:52 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/28 21:44:40 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	main(int argc, char **argv)
 {
-	//t_table table;
+	t_table table;
 
 	if (!check_input(argc, argv))
-		f_exit("Incorrect input\n", GROC);
-	printf_color("Parsing done correctly!\n", VERDE);
+		f_exit(WRONG_INPUT, GROC);
+	init_allocs(&table, argv);
 	return (0);
 }

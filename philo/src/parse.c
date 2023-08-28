@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:44:22 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/25 04:46:04 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/28 21:51:55 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*ft_strrchr(const char *s, int c)
 	return (NULL);
 }
 
-//Compare two strings to find differences
+//Check the limits of the number provided
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	int		i;
@@ -98,7 +98,7 @@ int	check_input(int argc, char **argv)
 	int	i;
 
 	i = 0;
-	if (argc < 4 || argc > 5)
+	if (argc < 5 || argc > 6)
 		return (0);
 	while (argv[++i])
 	{
