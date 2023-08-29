@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/29 00:04:43 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/29 06:05:55 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,26 @@
 
 typedef struct data
 {
-	int philo_amount;
-	int	death_time;
-	int	eat_time;
-	int	sleep_time;
-	int	hunger;
+	int 			philo_amount;
+	int				death_time;
+	int				eat_time;
+	int				sleep_time;
+	int				hunger;
+	pthread_mutex_t	start_mtx;
+	pthread_mutex_t	print_mtx;
+	long long		start_time;
 }	t_data;
 
 typedef struct philo
 {
-	int	id;
-	int	state;
-	int	times_eaten;
-	pthread_t	thread;
+	int				id;
+	int				state;
+	int				times_eaten;
+	pthread_t		thread;
 	pthread_mutex_t	*leftfork;
 	pthread_mutex_t	*rightfork;
-	//Add last time eaten
-	t_data *data;
+	long long		last_time_eaten;
+	t_data			*data;
 }	t_philo;
 
 
@@ -52,8 +55,6 @@ typedef struct table
 	t_philo	*philos;
 	pthread_mutex_t	*forks;
 	t_data data;
-	pthread_mutex_t start_mtx;
-	pthread_mutex_t print_mtx;
 }	t_table;
 
 /* --------------------------------- STATES --------------------------------- */
