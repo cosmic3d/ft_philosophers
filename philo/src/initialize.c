@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/30 03:20:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/30 05:11:15 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,8 @@ void	init_allocs(t_table *table, char **argv)
 		f_exit(MTX_ERROR, ROJO);
 	if (!init_philos(table))
 		f_exit(PHL_ERROR, ROJO);
-	debug_philos(table);
-	printf_color("✅ Mutexes and Philosophers correctly initialized! ✅\n", VERDE);
-	table->data.start_time = current_time();
-	while(42)
-	{
-		usleep(200000);
-		print_state(&table->philos[0]);
-		print_fork_grabbed(&table->philos[0]);
-	}
+	if (!init_threads(table))
+		f_exit(THR_ERROR, ROJO);
 }
 
 int	init_philos(t_table *table)
@@ -86,5 +79,24 @@ int	init_mutexes(t_table *table)
 	if (pthread_mutex_init(&table->data.start_mtx, NULL) || \
 	pthread_mutex_init(&table->data.print_mtx, NULL))
 		return (0);
+	return (1);
+}
+
+int	init_threads(t_table *table)
+{
+	int	i;
+	int	len;
+
+	i = -1;
+	len = table->data.philo_amount;
+	pthread_mutex_lock(&table->data.start_mtx);
+	while (++i < len)
+	{
+		if (pthread_create(&table->philos[i].thread, \
+		NULL, philo_thread, (void *)&table->philos[i]))
+			return (0);
+	}
+	table->data.start_time = current_time();
+	pthread_mutex_unlock(&table->data.start_mtx);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/30 03:21:43 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/30 05:30:14 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct philo
 	pthread_t		thread;
 	pthread_mutex_t	*leftfork;
 	pthread_mutex_t	*rightfork;
-	long long		last_time_eaten;
+	long long		last_meal;
 	t_data			*data;
 }	t_philo;
 
@@ -81,10 +81,15 @@ int			printf_color(char *err_message, char* color);
 void		print_state(t_philo *philo);
 void		print_fork_grabbed(t_philo *philo);
 void		print_info(t_philo *philo);
+int			print_zeros(int num, int philos);
 //Initialize
 void		init_allocs(t_table *table, char **argv);
 int			init_mutexes(t_table *table);
 int			init_philos(t_table *table);
+int			init_threads(t_table *table);
+//Threads
+void		*philo_thread(void *_philo);
+void		init_joins(t_table *table);
 //Debug
 void		debug_philos(t_table *table);
 #endif
