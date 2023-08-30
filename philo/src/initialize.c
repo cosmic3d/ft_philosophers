@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/29 05:45:20 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/30 03:20:02 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ void	init_allocs(t_table *table, char **argv)
 		f_exit(PHL_ERROR, ROJO);
 	debug_philos(table);
 	printf_color("✅ Mutexes and Philosophers correctly initialized! ✅\n", VERDE);
+	table->data.start_time = current_time();
+	while(42)
+	{
+		usleep(200000);
+		print_state(&table->philos[0]);
+		print_fork_grabbed(&table->philos[0]);
+	}
 }
 
 int	init_philos(t_table *table)

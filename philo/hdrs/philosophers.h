@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/29 06:05:55 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/30 03:21:43 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,24 @@ typedef struct table
 /* --------------------------------- FUNCS -------------------------------- */
 
 //Parse
-int		ft_atoi(const char *str);
-int		forbidden_chars(char *str, char *allowed);
-char	*ft_strrchr(const char *s, int c);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		check_input(int argc, char **argv);
+int			ft_atoi(const char *str);
+int			forbidden_chars(char *str, char *allowed);
+char		*ft_strrchr(const char *s, int c);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			check_input(int argc, char **argv);
 //Utils
-int		f_exit(char *err_message, char* color);
+int			f_exit(char *err_message, char* color);
+long long	current_time(void);
+long long	timestamp(t_philo *philo);
 //Print
-int		printf_color(char *err_message, char* color);
+int			printf_color(char *err_message, char* color);
+void		print_state(t_philo *philo);
+void		print_fork_grabbed(t_philo *philo);
+void		print_info(t_philo *philo);
 //Initialize
-void	init_allocs(t_table *table, char **argv);
-int		init_mutexes(t_table *table);
-int		init_philos(t_table *table);
+void		init_allocs(t_table *table, char **argv);
+int			init_mutexes(t_table *table);
+int			init_philos(t_table *table);
 //Debug
-void	debug_philos(t_table *table);
+void		debug_philos(t_table *table);
 #endif

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 20:34:55 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/28 23:56:42 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/30 03:00:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # define NO_PHILOS "🤔❗ At least one philosopher needed to start the simulation ❗🤔\n"
 # define WRONG_INPUT "❗❌ Incorrect input ❌❗\n"
 # define PHILOS_FULL "🥂 All philosophers have eaten enough 🥂\n"
+# define PRINTF_ERROR "❗❌ An error occurred while printing with printf ❌❗\n"
 # define MTX_ERROR "❗❌ An error occurred when initializing the mutexes ❌❗\n"
 # define PHL_ERROR "❗❌ An error occurred when initializing the philos ❌❗\n"
+# define PHL_EAT "🍝 is eating 🍝\n"
+# define PHL_SLEEP "💤 is sleeping 💤\n"
+# define PHL_THINK "🧠 is thinking 🧠\n"
+# define PHL_DEAD "☠️ died ☠️\n"
+# define PHL_FORK "🍴 has taken a fork 🍴\n"
 #endif
