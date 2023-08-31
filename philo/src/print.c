@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/30 18:29:22 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/31 05:40:20 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,26 @@ int	printf_color(char *err_message, char* color)
 // Prints the current state of the philosopher and locks the code with a mutex to prevent message mixing
 void	print_state(t_philo *philo)
 {
+	if (philo->data->some1died && philo->state != ST_DEAD)
+		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
 	print_info(philo);
 	if (philo->state == ST_DEAD)
-		printf_color(PHL_DEAD, GROC);
+		printf_color(PHL_DEAD, ROJO);
 	else if (philo->state == ST_EATING)
-		printf_color(PHL_EAT, GROC);
+		printf_color(PHL_EAT, VERDE);
 	else if (philo->state == ST_SLEEPING)
-		printf_color(PHL_SLEEP, GROC);
+		printf_color(PHL_SLEEP, AZUL);
 	else if (philo->state == ST_THINKING)
-		printf_color(PHL_THINK, GROC);
+		printf_color(PHL_THINK, CYAN);
 	pthread_mutex_unlock(&philo->data->print_mtx);
 }
 
 //Prints that X philosophers has grabbed a fork
 void	print_fork_grabbed(t_philo *philo)
 {
+	if (philo->data->some1died && philo->state != ST_DEAD)
+		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
 	print_info(philo);
 	printf_color(PHL_FORK, GROC);
@@ -57,12 +61,13 @@ void	print_fork_grabbed(t_philo *philo)
 //so it must not be called from outside print_state or print_fork_grabbed
 void	print_info(t_philo *philo)
 {
-	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", timestamp(philo)) < 0 || \
+	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
+	time_since(philo->data->start_time)) < 0 || \
 	printf(VERDE) < 0 || printf("🤔 [") < 0 || printf("%i]\t", \
 	print_zeros(philo->id, philo->data->philo_amount)) < 0)
 	{
 		write(STDOUT_FILENO, PRINTF_ERROR, 46);
-		exit(1);
+		exit(1);//Add here the free all function
 	}
 }
 
@@ -91,7 +96,7 @@ int	print_zeros(int num, int philos)
 		if (printf("0") < 0)
 		{
 			write(STDOUT_FILENO, PRINTF_ERROR, 46);
-			exit(1);
+			exit(1);//Add here the free all function
 		}
 	}
 	return (tmp_num);

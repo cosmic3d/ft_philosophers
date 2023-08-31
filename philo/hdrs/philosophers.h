@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/30 21:03:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/31 05:44:35 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct data
 	pthread_mutex_t	start_mtx;
 	pthread_mutex_t	print_mtx;
 	long long		start_time;
+	int				some1died;
+	int				philos_full;
 }	t_data;
 
 typedef struct philo
@@ -75,7 +77,7 @@ int			check_input(int argc, char **argv);
 //Utils
 int			f_exit(char *err_message, char* color);
 long long	current_time(void);
-long long	timestamp(t_philo *philo);
+long long	time_since(long long time);
 //Print
 int			printf_color(char *err_message, char* color);
 void		print_state(t_philo *philo);
@@ -89,7 +91,9 @@ int			init_philos(t_table *table);
 int			init_threads(t_table *table);
 //Threads
 void		*philo_thread(void *_philo);
+int			philo_eat(t_philo *philo);
 void		init_joins(t_table *table);
+void		sisyphus_watcher(t_table *table);
 //Debug
 void		debug_philos(t_table *table);
 #endif

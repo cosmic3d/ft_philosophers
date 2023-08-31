@@ -6,12 +6,13 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/30 05:11:15 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/31 05:45:11 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
+//Main function that initializes mutexes, philos and threads
 void	init_allocs(t_table *table, char **argv)
 {
 	table->data.philo_amount = ft_atoi(argv[1]);
@@ -21,6 +22,8 @@ void	init_allocs(t_table *table, char **argv)
 	table->data.eat_time = ft_atoi(argv[3]);
 	table->data.sleep_time = ft_atoi(argv[4]);
 	table->data.hunger = -1;
+	table->data.some1died = 0;
+	table->data.philos_full = 0;
 	if (argv[5])
 		table->data.hunger = ft_atoi(argv[5]);
 	if (!table->data.hunger)
@@ -33,6 +36,7 @@ void	init_allocs(t_table *table, char **argv)
 		f_exit(THR_ERROR, ROJO);
 }
 
+//Initializes the philos and assigns the forks to each one of them
 int	init_philos(t_table *table)
 {
 	int	i;
@@ -61,6 +65,7 @@ int	init_philos(t_table *table)
 	return (1);
 }
 
+//Initializes the mutexes
 int	init_mutexes(t_table *table)
 {
 	int	i;
@@ -82,6 +87,7 @@ int	init_mutexes(t_table *table)
 	return (1);
 }
 
+//Initializes the threads and stablishes the start time right after they all started and can begin the loop
 int	init_threads(t_table *table)
 {
 	int	i;

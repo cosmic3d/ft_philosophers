@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/30 18:23:48 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/08/31 04:07:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ long long	current_time(void)
 	return ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
 }
 
-//Returns how many milliseconds have passed since start time
-long long	timestamp(t_philo *philo)
+//Returns how many milliseconds have passed since time
+//This is useful to determine the timestamp or if some philosopher died of starvation :3
+long long	time_since(long long time)
 {
-	return (current_time() - philo->data->start_time);
+	return (current_time() - time);
 }
