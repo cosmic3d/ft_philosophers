@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/31 05:44:35 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/01 04:45:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct table
 {
 	t_philo	*philos;
 	pthread_mutex_t	*forks;
+	pthread_t		watcher;
 	t_data data;
 }	t_table;
 
@@ -78,6 +79,7 @@ int			check_input(int argc, char **argv);
 int			f_exit(char *err_message, char* color);
 long long	current_time(void);
 long long	time_since(long long time);
+void		wait(int time, int *some1died);
 //Print
 int			printf_color(char *err_message, char* color);
 void		print_state(t_philo *philo);
@@ -90,10 +92,11 @@ int			init_mutexes(t_table *table);
 int			init_philos(t_table *table);
 int			init_threads(t_table *table);
 //Threads
+void		init_joins(t_table *table);
 void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
-void		init_joins(t_table *table);
-void		sisyphus_watcher(t_table *table);
+int			drop_forks(t_philo *philo, int left, int right);
+void		*sisyphus_watcher(void *_table);
 //Debug
 void		debug_philos(t_table *table);
 #endif

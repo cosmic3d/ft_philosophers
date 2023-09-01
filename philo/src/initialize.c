@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/31 05:45:11 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/01 05:58:25 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,9 @@ int	init_threads(t_table *table)
 			return (0);
 	}
 	table->data.start_time = current_time();
+	if (pthread_create(&table->watcher, \
+		NULL, sisyphus_watcher, (void *)table))
+			return (0);
 	pthread_mutex_unlock(&table->data.start_mtx);
 	return (1);
 }
