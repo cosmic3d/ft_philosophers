@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/01 06:49:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/02 03:30:38 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	print_fork_grabbed(t_philo *philo)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
 	print_info(philo);
-	printf_color(PHL_FORK, GROC);
+	printf_color(PHL_FORK, MAGENTA);
 	pthread_mutex_unlock(&philo->data->print_mtx);
 }
 

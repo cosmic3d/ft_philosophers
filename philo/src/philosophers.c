@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 20:30:45 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/01 06:55:27 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/02 04:54:43 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,16 @@ void	*sisyphus_watcher(void *_table)
 	t_table	*table;
 
 	table = (t_table *)_table;
+	usleep(50 * table->data.philo_amount);
 	while (!table->data.some1died)
 	{
 		i = -1;
-		usleep(500); //Añadir factor por el que multiplicar ya que sino cuando hay muchos filósofos mueren porque no les da tiempo a iniciarse
+		usleep(500);
 		while (++i < table->data.philo_amount)
 		{
-			if (table->data.philos_full == table->data.philo_amount && table->data.hunger != -1)
+			if (check_death_or_full(&table->philos[i]))
 			{
-				table->data.some1died = 1;
-				return (NULL);
-			}
-			if (time_since(table->philos[i].last_meal) > table->data.death_time \
-			&& table->philos[i].state != ST_EATING)
-			{
-				table->philos[i].state = ST_DEAD;
-				table->data.some1died = 1;
-				print_state(&table->philos[i]);
+				//debug_philos(table);
 				return (NULL);
 			}
 		}

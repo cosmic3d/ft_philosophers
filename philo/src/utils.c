@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/01 03:06:45 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/02 05:08:07 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,26 @@ void	wait(int time, int *some1died)
 	start_time = current_time();
 	while (!*some1died && time_since(start_time) < time)
 		usleep(500);
+}
+
+//This way we check if a philosopher died or if they are all full
+int	check_death_or_full(t_philo *philo)
+{
+	if (philo->data->philos_full == philo->data->philo_amount \
+	&& philo->data->hunger != -1)
+	{
+		philo->data->some1died = 1;
+		usleep(10 * philo->data->philo_amount);
+		printf_color(PHILOS_FULL, VERDE);
+		return (1);
+	}
+	if (time_since(philo->last_meal) >= philo->data->death_time \
+	&& philo->state != ST_EATING)
+	{
+		philo->state = ST_DEAD;
+		philo->data->some1died = 1;
+		print_state(philo);
+		return (1);
+	}
+	return (0);
 }

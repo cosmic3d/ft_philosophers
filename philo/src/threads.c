@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/01 06:20:16 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/02 04:54:21 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*philo_thread(void *_philo)
 	if (philo->data->death_time == 0)
 		return (NULL);
 	if (philo->id % 2 == 0)
-		usleep(500);
+		usleep(50 * philo->data->philo_amount);
 	while (!philo->data->some1died)
 	{
 		if (!philo_eat(philo))

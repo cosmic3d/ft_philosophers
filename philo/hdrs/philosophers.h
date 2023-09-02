@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/01 04:45:58 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/02 03:07:22 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int			f_exit(char *err_message, char* color);
 long long	current_time(void);
 long long	time_since(long long time);
 void		wait(int time, int *some1died);
+int			check_death_or_full(t_philo *philo);
 //Print
 int			printf_color(char *err_message, char* color);
 void		print_state(t_philo *philo);

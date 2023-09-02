@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 23:57:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/29 00:09:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/02 04:32:54 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	debug_philos(t_table *table)
 {
 	int	i;
+	long long	start;
 
 	i = -1;
+	start = current_time();
 	while (++i < table->data.philo_amount)
 	{
 		printf_color("PHILO: ", VERDE);
@@ -27,5 +29,7 @@ void	debug_philos(t_table *table)
 		printf("%s%p\n", RESET, table->philos[i].leftfork);
 		printf_color("\tRight fork: ", GROC);
 		printf("%s%p\n", RESET, table->philos[i].rightfork);
+		printf_color("\tLast meal: ", ROJO);
+		printf("%s%lld\n", RESET, table->philos[i].last_meal - start);
 	}
 }
