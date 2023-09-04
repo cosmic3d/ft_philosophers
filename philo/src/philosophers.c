@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 20:30:45 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 17:12:39 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:34:29 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	*sisyphus_watcher(void *_table)
 	table = (t_table *)_table;
 	if (check_death_or_full(&table->philos[0]))
 		return (NULL);
-	usleep(50 * table->data.philo_amount);
 	while (!table->data.some1died)
 	{
 		i = -1;

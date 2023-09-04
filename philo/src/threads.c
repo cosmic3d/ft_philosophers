@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 17:12:24 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:56:23 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	philo_eat(t_philo *philo)
 		return (drop_forks(philo, 1, 1));
 	print_fork_grabbed(philo);
 	philo->state = ST_EATING;
+	philo->last_meal = current_time();
 	print_state(philo);
 	wait_x(philo->data->eat_time, &philo->data->some1died);
 	philo->last_meal = current_time();
@@ -89,8 +90,7 @@ int	drop_forks(t_philo *philo, int left, int right)
 //This way we check if a philosopher died or if they are all full
 int	check_death_or_full(t_philo *philo)
 {
-	if (time_since(philo->last_meal) >= philo->data->death_time \
-	&& philo->state != ST_EATING)
+	if (time_since(philo->last_meal) >= philo->data->death_time)
 	{
 		philo->state = ST_DEAD;
 		philo->data->some1died = 1;
@@ -98,7 +98,7 @@ int	check_death_or_full(t_philo *philo)
 		print_death(philo, time_since(philo->data->start_time));
 		return (1);
 	}
-	if (!philo->philo_full && philo->times_eaten == philo->data->hunger)
+	if (!philo->philo_full && philo->times_eaten >= philo->data->hunger)
 	{
 		philo->philo_full = 1;
 		philo->data->philos_full++;

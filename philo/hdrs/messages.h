@@ -6,14 +6,14 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 20:34:55 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/03 17:45:04 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:49:24 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MESSAGES_H
 # define MESSAGES_H
 
-# define NO_PHILOS "🤔❗ At least one philosopher needed to start the simulation ❗🤔\n"
+# define NO_PHILOS "🤔❗At least 1 philosopher needed to start the simulation❗🤔\n"
 # define WRONG_INPUT "❗❌ Incorrect input ❌❗\n"
 # define PHILOS_FULL "🥂 All philosophers have eaten enough 🥂\n"
 # define PRINTF_ERROR "❗❌ An error occurred while printing with printf ❌❗\n"
