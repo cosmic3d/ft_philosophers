@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/02 03:30:38 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 07:02:25 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 // Prints a message with a color
 int	printf_color(char *err_message, char* color)
 {
-	/* if (!color)
-		color = RESET; */
 	if (*err_message)
 	{
 		if (printf("%s%s", color, err_message) < 0)
@@ -31,13 +29,19 @@ int	printf_color(char *err_message, char* color)
 // Prints the current state of the philosopher and locks the code with a mutex to prevent message mixing
 void	print_state(t_philo *philo)
 {
-	if (philo->data->some1died && philo->state != ST_DEAD)
+	if (philo->data->some1died)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
-	print_info(philo);
-	if (philo->state == ST_DEAD)
-		printf_color(PHL_DEAD, ROJO);
-	else if (philo->state == ST_EATING)
+	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
+	time_since(philo->data->start_time)) < 0 || \
+	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
+	print_zeros(philo->id, philo->data->philo_amount)) < 0)
+	{
+		write(STDOUT_FILENO, PRINTF_ERROR, 46);
+		pthread_mutex_unlock(&philo->data->print_mtx);
+		exit(1);
+	}
+	if (philo->state == ST_EATING)
 		printf_color(PHL_EAT, VERDE);
 	else if (philo->state == ST_SLEEPING)
 		printf_color(PHL_SLEEP, AZUL);
@@ -52,23 +56,33 @@ void	print_fork_grabbed(t_philo *philo)
 	if (philo->data->some1died)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
-	print_info(philo);
-	printf_color(PHL_FORK, MAGENTA);
-	pthread_mutex_unlock(&philo->data->print_mtx);
-}
-
-//Prints the current timestamp and philo. This is a complementary function,
-//so it must not be called from outside print_state or print_fork_grabbed
-void	print_info(t_philo *philo)
-{
 	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
 	time_since(philo->data->start_time)) < 0 || \
 	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
 	print_zeros(philo->id, philo->data->philo_amount)) < 0)
 	{
 		write(STDOUT_FILENO, PRINTF_ERROR, 46);
-		exit(1);//Add here the free all function
+		pthread_mutex_unlock(&philo->data->print_mtx);
+		exit(1);
 	}
+	printf_color(PHL_FORK, MAGENTA);
+	pthread_mutex_unlock(&philo->data->print_mtx);
+}
+
+//Prints the death of a philosopher
+void	print_death(t_philo *philo, long long timestamp)
+{
+	pthread_mutex_lock(&philo->data->print_mtx);
+	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", timestamp) < 0 || \
+	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
+	print_zeros(philo->id, philo->data->philo_amount)) < 0)
+	{
+		write(STDOUT_FILENO, PRINTF_ERROR, 46);
+		pthread_mutex_unlock(&philo->data->print_mtx);
+		exit(1);
+	}
+	printf_color(PHL_DEAD, ROJO);
+	pthread_mutex_unlock(&philo->data->print_mtx);
 }
 
 //Prints a number of zeros in front of the number so the tabs are consistent. Just a fancy touch

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/02 05:08:07 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 07:00:05 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,25 @@ void	wait(int time, int *some1died)
 		usleep(500);
 }
 
-//This way we check if a philosopher died or if they are all full
-int	check_death_or_full(t_philo *philo)
+//This function makes sure there are no leaks by destroying the mutexes
+//one by one and liberating them along with the philos
+void	liberate(t_table *table)
 {
-	if (philo->data->philos_full == philo->data->philo_amount \
-	&& philo->data->hunger != -1)
+	int	i;
+
+	i = -1;
+	while (++i < table->data.philo_amount)
 	{
-		philo->data->some1died = 1;
-		usleep(10 * philo->data->philo_amount);
-		printf_color(PHILOS_FULL, VERDE);
-		return (1);
+		if (pthread_mutex_destroy(&table->forks[i]))
+			f_exit(MTX_ERROR2, ROJO);
 	}
-	if (time_since(philo->last_meal) >= philo->data->death_time \
-	&& philo->state != ST_EATING)
-	{
-		philo->state = ST_DEAD;
-		philo->data->some1died = 1;
-		print_state(philo);
-		return (1);
-	}
-	return (0);
+	if (pthread_mutex_destroy(&table->data.start_mtx))
+		f_exit(MTX_ERROR2, ROJO);
+	if (pthread_mutex_destroy(&table->data.print_mtx))
+		f_exit(MTX_ERROR2, ROJO);
+	if (table->forks != NULL)
+		free(table->forks);
+	if (table->philos != NULL)
+		free(table->philos);
+	f_exit("", VERDE);
 }

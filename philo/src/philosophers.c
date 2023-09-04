@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 20:30:45 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/02 05:47:20 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 06:53:34 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ void	*sisyphus_watcher(void *_table)
 	t_table	*table;
 
 	table = (t_table *)_table;
+	if (check_death_or_full(&table->philos[0]))
+		return (NULL);
 	usleep(50 * table->data.philo_amount);
 	while (!table->data.some1died)
 	{
 		i = -1;
-		usleep(500);
+		usleep(100);
 		while (++i < table->data.philo_amount)
 		{
 			if (check_death_or_full(&table->philos[i]))
@@ -45,8 +47,6 @@ int	main(int argc, char **argv)
 		f_exit(WRONG_INPUT, GROC);
 	init_allocs(&table, argv);
 	init_joins(&table);
-	f_exit("Habrá leaks?\n", AZUL);
-	//If all the threads have ended, then a philosopher died or something went wrong
-	//In any of those cases, we unlock all the mutexes, destroy them and free them along with all the other mallocs just before we exit
+	liberate(&table);
 	return (0);
 }

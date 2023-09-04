@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/02 04:54:21 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 06:54:24 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ void	*philo_thread(void *_philo)
 	philo = (t_philo *)_philo;
 	pthread_mutex_lock(&philo->data->start_mtx);
 	pthread_mutex_unlock(&philo->data->start_mtx);
-	philo->last_meal = philo->data->start_time;
 	if (philo->data->death_time == 0)
 		return (NULL);
 	if (philo->id % 2 == 0)
-		usleep(50 * philo->data->philo_amount);
+		usleep(150 * philo->data->philo_amount);
 	while (!philo->data->some1died)
 	{
 		if (!philo_eat(philo))
@@ -70,8 +69,6 @@ int	philo_eat(t_philo *philo)
 	wait(philo->data->eat_time, &philo->data->some1died);
 	philo->last_meal = current_time();
 	philo->times_eaten++;
-	if (philo->times_eaten == philo->data->hunger)
-		philo->data->philos_full++;
 	philo->state = ST_SLEEPING;
 	pthread_mutex_unlock(philo->leftfork);
 	pthread_mutex_unlock(philo->rightfork);
@@ -86,5 +83,33 @@ int	drop_forks(t_philo *philo, int left, int right)
 		pthread_mutex_unlock(philo->leftfork);
 	if (right)
 		pthread_mutex_unlock(philo->rightfork);
+	return (0);
+}
+
+//This way we check if a philosopher died or if they are all full
+int	check_death_or_full(t_philo *philo)
+{
+	if (time_since(philo->last_meal) >=philo->data->death_time \
+	&& philo->state != ST_EATING)
+	{
+		philo->state = ST_DEAD;
+		philo->data->some1died = 1;
+		usleep(1000);
+		print_death(philo, time_since(philo->data->start_time));
+		return (1);
+	}
+	if (!philo->philo_full && philo->times_eaten == philo->data->hunger)
+	{
+		philo->philo_full = 1;
+		philo->data->philos_full++;
+	}
+	if (philo->data->philos_full == philo->data->philo_amount \
+	&& philo->data->hunger != -1)
+	{
+		philo->data->some1died = 1;
+		usleep(100 * philo->data->philo_amount);
+		printf_color(PHILOS_FULL, VERDE);
+		return (1);
+	}
 	return (0);
 }

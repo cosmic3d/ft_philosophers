@@ -24,7 +24,7 @@ INC_DIR	= hdrs/
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
 SANS		= -fsanitize=address -g
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra $(SANS)
 AR			= ar -rcs
 RM			= rm -f
 MKDIR		= mkdir -p

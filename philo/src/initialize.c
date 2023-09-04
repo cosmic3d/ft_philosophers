@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/02 05:05:39 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 07:02:59 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	init_philos(t_table *table)
 		table->philos[i].data = &table->data;
 		table->philos[i].state = ST_THINKING;
 		table->philos[i].times_eaten = 0;
+		table->philos[i].philo_full = 0;
 		table->philos[i].leftfork = &table->forks[i];
 		if (len > 1)
 		{
@@ -87,7 +88,8 @@ int	init_mutexes(t_table *table)
 	return (1);
 }
 
-//Initializes the threads and stablishes the start time right after they all started and can begin the loop
+//Initializes the threads and stablishes the start time right after
+//they all started and can begin the loop
 int	init_threads(t_table *table)
 {
 	int	i;
@@ -103,6 +105,9 @@ int	init_threads(t_table *table)
 			return (0);
 	}
 	table->data.start_time = current_time();
+	i = -1;
+	while (++i < len)
+		table->philos[i].last_meal = table->data.start_time;
 	if (pthread_create(&table->watcher, \
 		NULL, sisyphus_watcher, (void *)table))
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/02 03:07:22 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 07:02:33 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct philo
 	pthread_mutex_t	*leftfork;
 	pthread_mutex_t	*rightfork;
 	long long		last_meal;
+	int				philo_full;
 	t_data			*data;
 }	t_philo;
 
@@ -80,12 +81,12 @@ int			f_exit(char *err_message, char* color);
 long long	current_time(void);
 long long	time_since(long long time);
 void		wait(int time, int *some1died);
-int			check_death_or_full(t_philo *philo);
+void		liberate(t_table *table);
 //Print
 int			printf_color(char *err_message, char* color);
 void		print_state(t_philo *philo);
 void		print_fork_grabbed(t_philo *philo);
-void		print_info(t_philo *philo);
+void		print_death(t_philo *philo, long long timestamp);
 int			print_zeros(int num, int philos);
 //Initialize
 void		init_allocs(t_table *table, char **argv);
@@ -97,6 +98,7 @@ void		init_joins(t_table *table);
 void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
 int			drop_forks(t_philo *philo, int left, int right);
+int			check_death_or_full(t_philo *philo);
 void		*sisyphus_watcher(void *_table);
 //Debug
 void		debug_philos(t_table *table);
