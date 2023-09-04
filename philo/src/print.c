@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 07:02:25 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:44:54 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	printf_color(char *err_message, char* color)
 	return (0);
 }
 
-// Prints the current state of the philosopher and locks the code with a mutex to prevent message mixing
+// Prints the current state of the philosopher and locks
+//the code with a mutex to prevent message mixing
 void	print_state(t_philo *philo)
 {
-	if (philo->data->some1died)
+	if (philo->data->some1died || philo->state == ST_DEAD)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
 	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \

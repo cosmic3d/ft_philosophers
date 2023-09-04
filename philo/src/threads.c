@@ -6,11 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 06:54:24 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:12:24 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../hdrs/philosophers.h"
+#include "../hdrs/philosophers.h"
 
 //Joins all the threads
 void	init_joins(t_table *table)
@@ -23,7 +23,7 @@ void	init_joins(t_table *table)
 	while (++i < len)
 	{
 		if (pthread_join(table->philos[i].thread, NULL))
-			f_exit(JOIN_ERROR, ROJO); //Esto en el futuro será reemplazado por una función que libere toda la memória y haga pthread_mutex_destroy antes de hacer exit
+			f_exit(JOIN_ERROR, ROJO);
 	}
 	if (pthread_join(table->watcher, NULL))
 		f_exit(JOIN_ERROR, ROJO);
@@ -32,7 +32,7 @@ void	init_joins(t_table *table)
 //Main philo loop
 void	*philo_thread(void *_philo)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)_philo;
 	pthread_mutex_lock(&philo->data->start_mtx);
@@ -40,13 +40,13 @@ void	*philo_thread(void *_philo)
 	if (philo->data->death_time == 0)
 		return (NULL);
 	if (philo->id % 2 == 0)
-		usleep(150 * philo->data->philo_amount);
+		usleep((philo->data->eat_time * 1000) - 500);
 	while (!philo->data->some1died)
 	{
 		if (!philo_eat(philo))
 			return (NULL);
 		print_state(philo);
-		wait(philo->data->sleep_time, &philo->data->some1died);
+		wait_x(philo->data->sleep_time, &philo->data->some1died);
 		philo->state = ST_THINKING;
 		print_state(philo);
 	}
@@ -66,7 +66,7 @@ int	philo_eat(t_philo *philo)
 	print_fork_grabbed(philo);
 	philo->state = ST_EATING;
 	print_state(philo);
-	wait(philo->data->eat_time, &philo->data->some1died);
+	wait_x(philo->data->eat_time, &philo->data->some1died);
 	philo->last_meal = current_time();
 	philo->times_eaten++;
 	philo->state = ST_SLEEPING;
@@ -89,7 +89,7 @@ int	drop_forks(t_philo *philo, int left, int right)
 //This way we check if a philosopher died or if they are all full
 int	check_death_or_full(t_philo *philo)
 {
-	if (time_since(philo->last_meal) >=philo->data->death_time \
+	if (time_since(philo->last_meal) >= philo->data->death_time \
 	&& philo->state != ST_EATING)
 	{
 		philo->state = ST_DEAD;

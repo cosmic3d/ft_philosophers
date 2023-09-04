@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 07:02:33 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:12:29 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 typedef struct data
 {
-	int 			philo_amount;
+	int				philo_amount;
 	int				death_time;
 	int				eat_time;
 	int				sleep_time;
@@ -55,10 +55,10 @@ typedef struct philo
 
 typedef struct table
 {
-	t_philo	*philos;
+	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_t		watcher;
-	t_data data;
+	t_data			data;
 }	t_table;
 
 /* --------------------------------- STATES --------------------------------- */
@@ -77,13 +77,13 @@ char		*ft_strrchr(const char *s, int c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			check_input(int argc, char **argv);
 //Utils
-int			f_exit(char *err_message, char* color);
+int			f_exit(char *err_message, char *color);
 long long	current_time(void);
 long long	time_since(long long time);
-void		wait(int time, int *some1died);
+void		wait_x(int time, int *some1died);
 void		liberate(t_table *table);
 //Print
-int			printf_color(char *err_message, char* color);
+int			printf_color(char *err_message, char *color);
 void		print_state(t_philo *philo);
 void		print_fork_grabbed(t_philo *philo);
 void		print_death(t_philo *philo, long long timestamp);

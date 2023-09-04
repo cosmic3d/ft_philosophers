@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 20:30:45 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 06:53:34 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:12:39 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ sleeping and thinking is also absurd.
 The only difference is that they can die :)*/
 void	*sisyphus_watcher(void *_table)
 {
-	int	i;
+	int		i;
 	t_table	*table;
 
 	table = (t_table *)_table;
@@ -41,7 +41,7 @@ void	*sisyphus_watcher(void *_table)
 
 int	main(int argc, char **argv)
 {
-	t_table table;
+	t_table	table;
 
 	if (!check_input(argc, argv))
 		f_exit(WRONG_INPUT, GROC);
