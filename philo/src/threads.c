@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 19:56:23 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/05 03:58:59 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ int	drop_forks(t_philo *philo, int left, int right)
 //This way we check if a philosopher died or if they are all full
 int	check_death_or_full(t_philo *philo)
 {
-	if (time_since(philo->last_meal) >= philo->data->death_time)
+	if (time_since(philo->last_meal) >= philo->data->death_time && \
+	philo->state != ST_EATING)
 	{
 		philo->state = ST_DEAD;
 		philo->data->some1died = 1;
