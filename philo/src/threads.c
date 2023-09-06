@@ -6,26 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 07:20:11 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 19:10:17 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
-
-//Joins all the threads
-void	init_joins(t_table *table)
-{
-	int	i;
-	int	len;
-
-	i = -1;
-	len = table->data.philo_amount;
-	while (++i < len)
-	{
-		if (pthread_join(table->philos[i].thread, NULL))
-			f_exit(JOIN_ERROR, ROJO);
-	}
-}
 
 //Main philo loop
 void	*philo_thread(void *_philo)
@@ -36,9 +21,10 @@ void	*philo_thread(void *_philo)
 	pthread_mutex_lock(&philo->data->start_mtx);
 	pthread_mutex_unlock(&philo->data->start_mtx);
 	if (philo->data->death_time == 0)
-		return (NULL);
+		if (check_death_or_full(philo))
+			return (NULL);
 	if (philo->id % 2 == 0)
-		wait_x(philo->data->eat_time - 1, philo);
+		wait_x(philo->data->eat_time + 2, philo);
 	while (!philo->data->some1died)
 	{
 		if (!philo_eat(philo) || philo->data->some1died)
@@ -59,7 +45,10 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_lock(philo->leftfork);
 	print_fork_grabbed(philo);
 	if (!philo->rightfork || philo->data->some1died)
+	{
+		wait_x(philo->data->death_time, philo);
 		return (drop_forks(philo, 1, 0));
+	}
 	pthread_mutex_lock(philo->rightfork);
 	if (check_death_or_full(philo) || philo->data->some1died)
 		return (drop_forks(philo, 1, 1));
@@ -92,31 +81,40 @@ int	drop_forks(t_philo *philo, int left, int right)
 //This way we check if a philosopher died or if they are all full
 int	check_death_or_full(t_philo *philo)
 {
-	long long	timestamp;
 	if (time_since(philo->last_meal) >= philo->data->death_time && \
 	philo->state != ST_EATING && !philo->data->some1died)
-	{
-		pthread_mutex_lock(&philo->data->death_mtx);
-		if (philo->data->some1died)
-			return (1);
-		philo->state = ST_DEAD;
-		philo->data->some1died = 1;
-		pthread_mutex_unlock(&philo->data->death_mtx);
-		timestamp = time_since(philo->data->start_time);
-		usleep(4000);
-		print_death(philo, timestamp);
-		return (1);
-	}
-	/* if (!philo->philo_full && philo->times_eaten >= philo->data->hunger)
+		return (check_death(philo));
+	if (!philo->philo_full && philo->times_eaten >= philo->data->hunger)
 	{
 		philo->philo_full = 1;
+		pthread_mutex_lock(&philo->data->eat_mtx);
 		philo->data->philos_full++;
+		pthread_mutex_unlock(&philo->data->eat_mtx);
 	}
 	if (philo->data->philos_full == philo->data->philo_amount \
 	&& philo->data->hunger != -1)
 	{
+		pthread_mutex_lock(&philo->data->eat_mtx);
 		philo->data->some1died = 1;
+		pthread_mutex_unlock(&philo->data->eat_mtx);
 		return (1);
-	} */
+	}
 	return (0);
+}
+
+//Norminette forces me to create an auxiliar function >:(
+int	check_death(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->death_mtx);
+	if (philo->data->some1died)
+	{
+		pthread_mutex_unlock(&philo->data->death_mtx);
+		return (1);
+	}
+	philo->state = ST_DEAD;
+	philo->data->some1died = 1;
+	pthread_mutex_unlock(&philo->data->death_mtx);
+	usleep(1000);
+	print_death(philo, time_since(philo->data->start_time));
+	return (1);
 }

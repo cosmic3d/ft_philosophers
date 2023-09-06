@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 06:41:01 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 18:09:42 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct data
 	pthread_mutex_t	start_mtx;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	death_mtx;
+	pthread_mutex_t	eat_mtx;
 	long long		start_time;
 	int				some1died;
 	int				philos_full;
@@ -99,6 +100,7 @@ void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
 int			drop_forks(t_philo *philo, int left, int right);
 int			check_death_or_full(t_philo *philo);
+int			check_death(t_philo *philo);
 //Debug
 void		debug_philos(t_table *table);
 #endif

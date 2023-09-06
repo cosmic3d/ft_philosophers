@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 06:41:30 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 19:40:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	init_mutexes(t_table *table)
 	}
 	if (pthread_mutex_init(&table->data.start_mtx, NULL) || \
 	pthread_mutex_init(&table->data.print_mtx, NULL) || \
-	pthread_mutex_init(&table->data.death_mtx, NULL))
+	pthread_mutex_init(&table->data.death_mtx, NULL) || \
+	pthread_mutex_init(&table->data.eat_mtx, NULL))
 		return (0);
 	return (1);
 }

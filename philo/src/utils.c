@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 06:41:53 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 18:57:02 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ long long	time_since(long long time)
 	return (current_time() - time);
 }
 
-//This function waits time milliseconds
+//This function waits time milliseconds and in the meantime checks if
+//someone died, including himself
 void	wait_x(int time, t_philo *philo)
 {
 	long long	start_time;
