@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 17:12:46 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 06:41:30 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,12 @@ void	init_allocs(t_table *table, char **argv)
 int	init_philos(t_table *table)
 {
 	int	i;
-	int	len;
 
 	i = -1;
-	len = table->data.philo_amount;
-	table->philos = (t_philo *)malloc(sizeof(t_philo) * len);
+	table->philos = malloc(sizeof(t_philo) * table->data.philo_amount);
 	if (!table->philos)
 		return (0);
-	while (++i < len)
+	while (++i < table->data.philo_amount)
 	{
 		table->philos[i].id = i + 1;
 		table->philos[i].data = &table->data;
@@ -55,9 +53,10 @@ int	init_philos(t_table *table)
 		table->philos[i].times_eaten = 0;
 		table->philos[i].philo_full = 0;
 		table->philos[i].leftfork = &table->forks[i];
-		if (len > 1)
+		table->philos[i].rightfork = NULL;
+		if (table->data.philo_amount > 1)
 		{
-			if (i != len - 1)
+			if (i != table->data.philo_amount - 1)
 				table->philos[i].rightfork = &table->forks[i + 1];
 			else
 				table->philos[i].rightfork = &table->forks[0];
@@ -83,7 +82,8 @@ int	init_mutexes(t_table *table)
 			return (0);
 	}
 	if (pthread_mutex_init(&table->data.start_mtx, NULL) || \
-	pthread_mutex_init(&table->data.print_mtx, NULL))
+	pthread_mutex_init(&table->data.print_mtx, NULL) || \
+	pthread_mutex_init(&table->data.death_mtx, NULL))
 		return (0);
 	return (1);
 }
@@ -108,9 +108,6 @@ int	init_threads(t_table *table)
 	i = -1;
 	while (++i < len)
 		table->philos[i].last_meal = table->data.start_time;
-	if (pthread_create(&table->watcher, \
-		NULL, sisyphus_watcher, (void *)table))
-			return (0);
 	pthread_mutex_unlock(&table->data.start_mtx);
 	return (1);
 }

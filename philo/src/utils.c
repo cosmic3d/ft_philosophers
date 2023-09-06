@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 16:18:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 06:41:53 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,17 @@ long long	time_since(long long time)
 }
 
 //This function waits time milliseconds
-void	wait_x(int time, int *some1died)
+void	wait_x(int time, t_philo *philo)
 {
 	long long	start_time;
 
 	start_time = current_time();
-	while (!*some1died && time_since(start_time) < time)
-		usleep(500);
+	while (!philo->data->some1died && time_since(start_time) < time)
+	{
+		if (check_death_or_full(philo))
+			return ;
+		usleep(200);
+	}
 }
 
 //This function makes sure there are no leaks by destroying the mutexes
@@ -56,12 +60,14 @@ void	liberate(t_table *table)
 	i = -1;
 	while (++i < table->data.philo_amount)
 	{
-		if (pthread_mutex_destroy(&table->forks[i]))
+		if (&table->forks[i] != NULL && pthread_mutex_destroy(&table->forks[i]))
 			f_exit(MTX_ERROR2, ROJO);
 	}
 	if (pthread_mutex_destroy(&table->data.start_mtx))
 		f_exit(MTX_ERROR2, ROJO);
 	if (pthread_mutex_destroy(&table->data.print_mtx))
+		f_exit(MTX_ERROR2, ROJO);
+	if (pthread_mutex_destroy(&table->data.death_mtx))
 		f_exit(MTX_ERROR2, ROJO);
 	if (table->forks != NULL)
 		free(table->forks);

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/04 17:12:29 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/06 06:41:01 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct data
 	int				hunger;
 	pthread_mutex_t	start_mtx;
 	pthread_mutex_t	print_mtx;
+	pthread_mutex_t	death_mtx;
 	long long		start_time;
 	int				some1died;
 	int				philos_full;
@@ -57,7 +58,6 @@ typedef struct table
 {
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
-	pthread_t		watcher;
 	t_data			data;
 }	t_table;
 
@@ -80,7 +80,7 @@ int			check_input(int argc, char **argv);
 int			f_exit(char *err_message, char *color);
 long long	current_time(void);
 long long	time_since(long long time);
-void		wait_x(int time, int *some1died);
+void		wait_x(int time, t_philo *philo);
 void		liberate(t_table *table);
 //Print
 int			printf_color(char *err_message, char *color);
@@ -99,7 +99,6 @@ void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
 int			drop_forks(t_philo *philo, int left, int right);
 int			check_death_or_full(t_philo *philo);
-void		*sisyphus_watcher(void *_table);
 //Debug
 void		debug_philos(t_table *table);
 #endif
