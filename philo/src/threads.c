@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 19:10:17 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/07 04:49:18 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	check_death(t_philo *philo)
 	philo->state = ST_DEAD;
 	philo->data->some1died = 1;
 	pthread_mutex_unlock(&philo->data->death_mtx);
-	usleep(1000);
+	//usleep(1000);
 	print_death(philo, time_since(philo->data->start_time));
 	return (1);
 }

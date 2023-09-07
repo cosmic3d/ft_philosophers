@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 07:19:16 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/07 04:48:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ void	print_fork_grabbed(t_philo *philo)
 	if (philo->data->some1died)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
+	if (philo->data->some1died)
+	{
+		pthread_mutex_unlock(&philo->data->print_mtx);
+		return ;
+	}
 	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
 	time_since(philo->data->start_time)) < 0 || \
 	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \

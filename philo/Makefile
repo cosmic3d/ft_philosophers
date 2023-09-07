@@ -23,8 +23,8 @@ INC_DIR	= hdrs/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
-SANS		= -fsanitize=address -g
-CFLAGS		= -Wall -Werror -Wextra $(SANS)
+SANS		= -fsanitize=thread -g
+CFLAGS		= -Wall -Werror -Wextra
 AR			= ar -rcs
 RM			= rm -f
 MKDIR		= mkdir -p
@@ -49,7 +49,7 @@ $(NAME):
 	@$(MAKE) $(PHILO)
 
 $(PHILO):: $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(PHILO)
+	@$(CC) $(CFLAGS) $(SANS) $(OBJS) -o $(PHILO)
 	@echo "$(GREEN)🧠🗣 PHILO COMPILED🧠🗣$(RESET)"
 
 $(PHILO)::
@@ -70,6 +70,6 @@ re: fclean all
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 	@$(MKDIR) $(dir $@)
 	@echo "$(MAGENTA)Compiling: $<$(RESET)"
-	@$(CC) -MT $@ -MMD -MP $(CFLAGS) -c $< -o $@
+	@$(CC) -MT $@ -MMD -MP $(CFLAGS) $(SANS) -c $< -o $@
 
 .PHONY:	all clean fclean re
