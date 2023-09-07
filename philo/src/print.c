@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/07 04:48:57 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/07 19:57:04 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	printf_color(char *err_message, char* color)
 //the code with a mutex to prevent message mixing
 void	print_state(t_philo *philo)
 {
-	if (philo->data->some1died || philo->state == ST_DEAD)
+	if (some1died(philo) || philo->state == ST_DEAD)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
-	if (philo->data->some1died)
+	if (some1died(philo))
 	{
 		pthread_mutex_unlock(&philo->data->print_mtx);
 		return ;
@@ -59,10 +59,10 @@ void	print_state(t_philo *philo)
 //Prints that X philosophers has grabbed a fork
 void	print_fork_grabbed(t_philo *philo)
 {
-	if (philo->data->some1died)
+	if (some1died(philo))
 		return ;
 	pthread_mutex_lock(&philo->data->print_mtx);
-	if (philo->data->some1died)
+	if (some1died(philo))
 	{
 		pthread_mutex_unlock(&philo->data->print_mtx);
 		return ;

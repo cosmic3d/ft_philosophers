@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 18:09:42 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/07 20:13:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,35 +72,45 @@ typedef struct table
 /* --------------------------------- FUNCS -------------------------------- */
 
 //Parse
+
 int			ft_atoi(const char *str);
 int			forbidden_chars(char *str, char *allowed);
 char		*ft_strrchr(const char *s, int c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			check_input(int argc, char **argv);
 //Utils
+
 int			f_exit(char *err_message, char *color);
 long long	current_time(void);
 long long	time_since(long long time);
 void		wait_x(int time, t_philo *philo);
 void		liberate(t_table *table);
 //Print
+
 int			printf_color(char *err_message, char *color);
 void		print_state(t_philo *philo);
 void		print_fork_grabbed(t_philo *philo);
 void		print_death(t_philo *philo, long long timestamp);
 int			print_zeros(int num, int philos);
 //Initialize
+
 void		init_allocs(t_table *table, char **argv);
 int			init_mutexes(t_table *table);
 int			init_philos(t_table *table);
 int			init_threads(t_table *table);
 //Threads
+
 void		init_joins(t_table *table);
 void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
-int			drop_forks(t_philo *philo, int left, int right);
 int			check_death_or_full(t_philo *philo);
 int			check_death(t_philo *philo);
+//Mutex utils
+
+int			drop_forks(t_philo *philo, int left, int right);
+int			some1died(t_philo *philo);
+void		starvation(t_philo *philo);
 //Debug
+
 void		debug_philos(t_table *table);
 #endif

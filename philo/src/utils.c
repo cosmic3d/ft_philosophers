@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 18:57:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/07 21:42:34 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ void	wait_x(int time, t_philo *philo)
 	long long	start_time;
 
 	start_time = current_time();
-	while (!philo->data->some1died && time_since(start_time) < time)
+	while (!some1died(philo) && time_since(start_time) < time)
 	{
 		if (check_death_or_full(philo))
 			return ;
-		usleep(200);
+		usleep(500);
 	}
+	if (philo->data->philo_amount == 1)
+		check_death_or_full(philo);
 }
 
 //This function makes sure there are no leaks by destroying the mutexes
