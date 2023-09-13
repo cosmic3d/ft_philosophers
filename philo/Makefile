@@ -23,7 +23,7 @@ INC_DIR	= hdrs/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
-SANS		= -fsanitize=thread -g
+#SANS		= -fsanitize=thread -g
 CFLAGS		= -Wall -Werror -Wextra
 AR			= ar -rcs
 RM			= rm -f
@@ -34,7 +34,7 @@ MAKE		= make -s
 HDRS		= $(INC_DIR)philosophers.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= philosophers.c parse.c print.c utils.c initialize.c debug.c threads.c mutex_utils.c
+SRCS		:= philosophers.c parse.c print.c utils.c initialize.c threads.c mutex_utils.c
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/07 20:13:26 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:45:34 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct philo
 	int				philo_full;
 	t_data			*data;
 }	t_philo;
-
 
 typedef struct table
 {
@@ -110,7 +109,4 @@ int			check_death(t_philo *philo);
 int			drop_forks(t_philo *philo, int left, int right);
 int			some1died(t_philo *philo);
 void		starvation(t_philo *philo);
-//Debug
-
-void		debug_philos(t_table *table);
 #endif

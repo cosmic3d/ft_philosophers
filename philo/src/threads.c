@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/07 21:25:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:45:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*philo_thread(void *_philo)
 		if (check_death_or_full(philo))
 			return (NULL);
 	if (philo->id % 2 == 0)
-		wait_x(philo->data->eat_time, philo);
+		wait_x((philo->data->eat_time + 1), philo);
 	while (!some1died(philo))
 	{
 		if (!philo_eat(philo) || some1died(philo))
@@ -97,7 +97,6 @@ int	check_death(t_philo *philo)
 		return (1);
 	philo->state = ST_DEAD;
 	starvation(philo);
-	//usleep(1000);
 	print_death(philo, time_since(philo->data->start_time));
 	return (1);
 }

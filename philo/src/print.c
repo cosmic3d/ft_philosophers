@@ -6,14 +6,14 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/07 19:57:04 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:44:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
 // Prints a message with a color
-int	printf_color(char *err_message, char* color)
+int	printf_color(char *err_message, char *color)
 {
 	if (*err_message)
 	{
@@ -96,7 +96,8 @@ void	print_death(t_philo *philo, long long timestamp)
 	pthread_mutex_unlock(&philo->data->print_mtx);
 }
 
-//Prints a number of zeros in front of the number so the tabs are consistent. Just a fancy touch
+//Prints a number of zeros in front of the number
+//so the tabs are consistent. Just a fancy touch
 int	print_zeros(int num, int philos)
 {
 	int	max_digits;

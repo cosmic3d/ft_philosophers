@@ -6,11 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:40:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/07 21:22:24 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:43:42 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../hdrs/philosophers.h"
+#include "../hdrs/philosophers.h"
 
 //In case some philosopher dies and we are still inside a function,
 // we will unlock the forks mutexes so later on I can destroy them correctly
