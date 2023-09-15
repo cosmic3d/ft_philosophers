@@ -55,12 +55,11 @@ int	philo_eat(t_philo *philo)
 	print_fork_grabbed(philo);
 	philo->state = ST_EATING;
 	philo->last_meal = current_time();
+	philo->times_eaten++;
 	print_state(philo);
 	wait_x(philo->data->eat_time, philo);
 	if (some1died(philo))
 		return (drop_forks(philo, 1, 1));
-	philo->last_meal = current_time();
-	philo->times_eaten++;
 	philo->state = ST_SLEEPING;
 	pthread_mutex_unlock(philo->leftfork);
 	pthread_mutex_unlock(philo->rightfork);
@@ -70,8 +69,7 @@ int	philo_eat(t_philo *philo)
 //This way we check if a philosopher died or if they are all full
 int	check_death_or_full(t_philo *philo)
 {
-	if (time_since(philo->last_meal) >= philo->data->death_time && \
-	philo->state != ST_EATING && !some1died(philo))
+	if (time_since(philo->last_meal) >= philo->data->death_time && !some1died(philo))
 		return (check_death(philo));
 	pthread_mutex_lock(&philo->data->eat_mtx);
 	if (!philo->philo_full && philo->times_eaten >= philo->data->hunger)

@@ -72,6 +72,7 @@ void	liberate(t_table *table)
 		f_exit(MTX_ERROR2, ROJO);
 	if (pthread_mutex_destroy(&table->data.death_mtx))
 		f_exit(MTX_ERROR2, ROJO);
+	if (pthread_mutex_destroy(&table->data.eat_mtx))                                                      f_exit(MTX_ERROR2, ROJO);
 	if (table->forks != NULL)
 		free(table->forks);
 	if (table->philos != NULL)
