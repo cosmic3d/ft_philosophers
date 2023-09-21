@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/13 19:45:34 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:26:13 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,27 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			check_input(int argc, char **argv);
 //Utils
 
-int			f_exit(char *err_message, char *color);
+int			f_error(char *err_message, char *color);
 long long	current_time(void);
 long long	time_since(long long time);
 void		wait_x(int time, t_philo *philo);
 void		liberate(t_table *table);
 //Print
 
-int			printf_color(char *err_message, char *color);
-void		print_state(t_philo *philo);
-void		print_fork_grabbed(t_philo *philo);
-void		print_death(t_philo *philo, long long timestamp);
+int			printf_color(char *error, char *color, pthread_mutex_t *mutex);
+int			print_state(t_philo *philo);
+int			print_fork_grabbed(t_philo *philo);
+int			print_death(t_philo *philo, long long timestamp);
 int			print_zeros(int num, int philos);
 //Initialize
 
-void		init_allocs(t_table *table, char **argv);
+int			init_allocs(t_table *table, char **argv);
 int			init_mutexes(t_table *table);
 int			init_philos(t_table *table);
 int			init_threads(t_table *table);
 //Threads
 
-void		init_joins(t_table *table);
+int			init_joins(t_table *table);
 void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
 int			check_death_or_full(t_philo *philo);

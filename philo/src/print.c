@@ -6,94 +6,96 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/13 19:44:26 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:24:23 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
 // Prints a message with a color
-int	printf_color(char *err_message, char *color)
+int	printf_color(char *error, char *color, pthread_mutex_t *mutex)
 {
-	if (*err_message)
+	if (*error)
 	{
-		if (printf("%s%s", color, err_message) < 0)
+		if (printf("%s%s", color, error) < 0)
 		{
+			if (mutex)
+				pthread_mutex_unlock(mutex);
 			write(STDOUT_FILENO, PRINTF_ERROR, 46);
-			exit(1);
+			return (0);
 		}
 	}
-	return (0);
+	if (mutex)
+		pthread_mutex_unlock(mutex);
+	return (1);
 }
 
 // Prints the current state of the philosopher and locks
 //the code with a mutex to prevent message mixing
-void	print_state(t_philo *philo)
+int	print_state(t_philo *philo)
 {
 	if (some1died(philo) || philo->state == ST_DEAD)
-		return ;
+		return (0);
 	pthread_mutex_lock(&philo->data->print_mtx);
 	if (some1died(philo))
 	{
 		pthread_mutex_unlock(&philo->data->print_mtx);
-		return ;
+		return (0);
 	}
 	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
 	time_since(philo->data->start_time)) < 0 || \
 	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
 	print_zeros(philo->id, philo->data->philo_amount)) < 0)
 	{
-		write(STDOUT_FILENO, PRINTF_ERROR, 46);
 		pthread_mutex_unlock(&philo->data->print_mtx);
-		exit(1);
+		write(STDOUT_FILENO, PRINTF_ERROR, 46);
+		return (0);
 	}
 	if (philo->state == ST_EATING)
-		printf_color(PHL_EAT, VERDE);
+		return (printf_color(PHL_EAT, VERDE, &philo->data->print_mtx));
 	else if (philo->state == ST_SLEEPING)
-		printf_color(PHL_SLEEP, AZUL);
+		return (printf_color(PHL_SLEEP, AZUL, &philo->data->print_mtx));
 	else if (philo->state == ST_THINKING)
-		printf_color(PHL_THINK, CYAN);
-	pthread_mutex_unlock(&philo->data->print_mtx);
+		return (printf_color(PHL_THINK, CYAN, &philo->data->print_mtx));
+	return (1);
 }
 
 //Prints that X philosophers has grabbed a fork
-void	print_fork_grabbed(t_philo *philo)
+int	print_fork_grabbed(t_philo *philo)
 {
 	if (some1died(philo))
-		return ;
+		return (0);
 	pthread_mutex_lock(&philo->data->print_mtx);
 	if (some1died(philo))
 	{
 		pthread_mutex_unlock(&philo->data->print_mtx);
-		return ;
+		return (0);
 	}
 	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
 	time_since(philo->data->start_time)) < 0 || \
 	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
 	print_zeros(philo->id, philo->data->philo_amount)) < 0)
 	{
-		write(STDOUT_FILENO, PRINTF_ERROR, 46);
 		pthread_mutex_unlock(&philo->data->print_mtx);
-		exit(1);
+		write(STDOUT_FILENO, PRINTF_ERROR, 46);
+		return (0);
 	}
-	printf_color(PHL_FORK, MAGENTA);
-	pthread_mutex_unlock(&philo->data->print_mtx);
+	return (printf_color(PHL_FORK, MAGENTA, &philo->data->print_mtx));
 }
 
 //Prints the death of a philosopher
-void	print_death(t_philo *philo, long long timestamp)
+int	print_death(t_philo *philo, long long timestamp)
 {
 	pthread_mutex_lock(&philo->data->print_mtx);
 	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", timestamp) < 0 || \
 	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
 	print_zeros(philo->id, philo->data->philo_amount)) < 0)
 	{
-		write(STDOUT_FILENO, PRINTF_ERROR, 46);
 		pthread_mutex_unlock(&philo->data->print_mtx);
-		exit(1);
+		write(STDOUT_FILENO, PRINTF_ERROR, 46);
+		return (0);
 	}
-	printf_color(PHL_DEAD, ROJO);
-	pthread_mutex_unlock(&philo->data->print_mtx);
+	return (printf_color(PHL_DEAD, ROJO, &philo->data->print_mtx));
 }
 
 //Prints a number of zeros in front of the number
@@ -118,6 +120,6 @@ int	print_zeros(int num, int philos)
 		max_digits--;
 	}
 	while (max_digits--)
-		printf_color("0", "");
+		printf_color("0", "", NULL);
 	return (tmp_num);
 }

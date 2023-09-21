@@ -6,17 +6,16 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/13 19:44:37 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:23:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
-//Prints a message with a color and exits
-int	f_exit(char *err_message, char *color)
+//Prints a message with a color and returns 0
+int	f_error(char *err_message, char *color)
 {
-	printf_color(err_message, color);
-	exit(1);
+	printf_color(err_message, color, NULL);
 	return (0);
 }
 
@@ -64,18 +63,15 @@ void	liberate(t_table *table)
 	while (++i < table->data.philo_amount)
 	{
 		if (&table->forks[i] != NULL && pthread_mutex_destroy(&table->forks[i]))
-			f_exit(MTX_ERROR2, ROJO);
+			f_error(MTX_ERROR2, ROJO);
 	}
-	if (pthread_mutex_destroy(&table->data.start_mtx))
-		f_exit(MTX_ERROR2, ROJO);
-	if (pthread_mutex_destroy(&table->data.print_mtx))
-		f_exit(MTX_ERROR2, ROJO);
-	if (pthread_mutex_destroy(&table->data.death_mtx))
-		f_exit(MTX_ERROR2, ROJO);
-	if (pthread_mutex_destroy(&table->data.eat_mtx))                                                      f_exit(MTX_ERROR2, ROJO);
+	if (pthread_mutex_destroy(&table->data.start_mtx) || \
+	pthread_mutex_destroy(&table->data.print_mtx) || \
+	pthread_mutex_destroy(&table->data.death_mtx) || \
+	pthread_mutex_destroy(&table->data.eat_mtx))
+		f_error(MTX_ERROR2, ROJO);
 	if (table->forks != NULL)
 		free(table->forks);
 	if (table->philos != NULL)
 		free(table->philos);
-	f_exit("", VERDE);
 }

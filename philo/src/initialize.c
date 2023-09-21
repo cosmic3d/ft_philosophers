@@ -6,18 +6,18 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/06 19:40:57 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:25:59 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
 //Main function that initializes mutexes, philos and threads
-void	init_allocs(t_table *table, char **argv)
+int	init_allocs(t_table *table, char **argv)
 {
 	table->data.philo_amount = ft_atoi(argv[1]);
 	if (!table->data.philo_amount)
-		f_exit(NO_PHILOS, ROJO);
+		return (f_error(NO_PHILOS, ROJO));
 	table->data.death_time = ft_atoi(argv[2]);
 	table->data.eat_time = ft_atoi(argv[3]);
 	table->data.sleep_time = ft_atoi(argv[4]);
@@ -27,13 +27,14 @@ void	init_allocs(t_table *table, char **argv)
 	if (argv[5])
 		table->data.hunger = ft_atoi(argv[5]);
 	if (!table->data.hunger)
-		f_exit(PHILOS_FULL, VERDE);
+		return (f_error(PHILOS_FULL, VERDE));
 	if (!init_mutexes(table))
-		f_exit(MTX_ERROR, ROJO);
+		return (f_error(MTX_ERROR, ROJO));
 	if (!init_philos(table))
-		f_exit(PHL_ERROR, ROJO);
+		return (f_error(PHL_ERROR, ROJO));
 	if (!init_threads(table))
-		f_exit(THR_ERROR, ROJO);
+		return (f_error(THR_ERROR, ROJO));
+	return (1);
 }
 
 //Initializes the philos and assigns the forks to each one of them

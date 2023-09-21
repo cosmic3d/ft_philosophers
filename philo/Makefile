@@ -23,7 +23,7 @@ INC_DIR	= hdrs/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
-#SANS		= -fsanitize=thread -g
+SANS		= -fsanitize=thread -g
 CFLAGS		= -Wall -Werror -Wextra
 AR			= ar -rcs
 RM			= rm -f
