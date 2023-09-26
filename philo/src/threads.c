@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/22 20:18:32 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/26 21:50:38 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ void	*philo_thread(void *_philo)
 //In this function I manage all the logic behind the philosophers eating
 int	philo_eat(t_philo *philo)
 {
+	while (*(int *)philo->leftfork && !some1died(philo))
+		wait_x(1, philo);//ARREGLAR ESTA MIERDA
 	pthread_mutex_lock(philo->leftfork);
 	if (!print_fork_grabbed(philo))
 		return (drop_forks(philo, 1, 0));
-	if (!philo->rightfork || some1died(philo))
+	if (!philo->rightfork)
 	{
 		wait_x(philo->data->death_time, philo);
 		return (drop_forks(philo, 1, 0));
