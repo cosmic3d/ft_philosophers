@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/27 21:46:23 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/27 22:18:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int			check_input(int argc, char **argv);
 int			f_error(char *err_message, char *color);
 long long	current_time(void);
 long long	time_since(long long time);
-void		wait_x(int time, t_philo *philo);
+void		wait_x(int time);
 int			liberate(t_table *table);
 //Print
 

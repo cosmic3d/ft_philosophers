@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/27 21:56:27 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/27 22:19:19 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void	*philo_thread(void *_philo)
 		if (check_death_or_full(philo))
 			return (NULL);
 	if (philo->id % 2 == 0)
-		wait_x((philo->data->eat_time), philo);
+		wait_x((philo->data->eat_time));
 	while (!some1died(philo))
 	{
 		if (!philo_eat(philo) || some1died(philo))
 			return (NULL);
 		if (check_death_or_full(philo) || !print_state(philo))
 			return (NULL);
-		wait_x(philo->data->sleep_time, philo);
+		wait_x(philo->data->sleep_time);
 		philo->state = ST_THINKING;
 		if (!print_state(philo))
 			return (NULL);
@@ -49,7 +49,7 @@ int	philo_eat(t_philo *philo)
 		return (drop_forks(philo, 1, 0));
 	if (!philo->rightfork)
 	{
-		wait_x(philo->data->death_time, philo);
+		wait_x(philo->data->death_time);
 		return (drop_forks(philo, 1, 0));
 	}
 	pthread_mutex_lock(philo->rightfork);
@@ -66,7 +66,7 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->eat_mtx);
 	if (!print_state(philo))
 		return (drop_forks(philo, 1, 1));
-	wait_x(philo->data->eat_time, philo);
+	wait_x(philo->data->eat_time);
 	if (some1died(philo))
 		return (drop_forks(philo, 1, 1));
 	philo->state = ST_SLEEPING;
