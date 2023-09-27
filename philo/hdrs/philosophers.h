@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/21 20:26:13 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/27 21:46:23 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct data
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	death_mtx;
 	pthread_mutex_t	eat_mtx;
+	pthread_mutex_t	lastmeal_mtx;
 	long long		start_time;
 	int				some1died;
 	int				philos_full;
@@ -59,6 +60,7 @@ typedef struct table
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	t_data			data;
+	pthread_t		watcher;
 }	t_table;
 
 /* --------------------------------- STATES --------------------------------- */
@@ -83,7 +85,7 @@ int			f_error(char *err_message, char *color);
 long long	current_time(void);
 long long	time_since(long long time);
 void		wait_x(int time, t_philo *philo);
-void		liberate(t_table *table);
+int			liberate(t_table *table);
 //Print
 
 int			printf_color(char *error, char *color, pthread_mutex_t *mutex);
@@ -109,4 +111,8 @@ int			check_death(t_philo *philo);
 int			drop_forks(t_philo *philo, int left, int right);
 int			some1died(t_philo *philo);
 void		starvation(t_philo *philo);
+int			check_last_meal(t_philo *philo);
+int			error_destroy(t_table *table, int i, int j);
+//Sisyphus watcher
+void		*sisyphus_watcher(void *_table);
 #endif

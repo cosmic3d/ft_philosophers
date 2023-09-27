@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:18:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/21 20:23:03 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/27 22:14:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	wait_x(int time, t_philo *philo)
 	{
 		if (check_death_or_full(philo))
 			return ;
-		usleep(500);
+		usleep(100);
 	}
 	if (philo->data->philo_amount == 1)
 		check_death_or_full(philo);
@@ -55,23 +55,31 @@ void	wait_x(int time, t_philo *philo)
 
 //This function makes sure there are no leaks by destroying the mutexes
 //one by one and liberating them along with the philos
-void	liberate(t_table *table)
+int	liberate(t_table *table)
 {
 	int	i;
 
 	i = -1;
-	while (++i < table->data.philo_amount)
+	while (++i < table->data.philo_amount && table->forks != NULL)
 	{
 		if (&table->forks[i] != NULL && pthread_mutex_destroy(&table->forks[i]))
-			f_error(MTX_ERROR2, ROJO);
+		{
+			if (table->forks != NULL)
+				free(table->forks);
+			if (table->philos != NULL)
+				free(table->philos);
+			return (f_error(MTX_ERROR2, ROJO));
+		}
 	}
-	if (pthread_mutex_destroy(&table->data.start_mtx) || \
-	pthread_mutex_destroy(&table->data.print_mtx) || \
-	pthread_mutex_destroy(&table->data.death_mtx) || \
-	pthread_mutex_destroy(&table->data.eat_mtx))
-		f_error(MTX_ERROR2, ROJO);
 	if (table->forks != NULL)
 		free(table->forks);
 	if (table->philos != NULL)
 		free(table->philos);
+	if (pthread_mutex_destroy(&table->data.start_mtx) || \
+	pthread_mutex_destroy(&table->data.print_mtx) || \
+	pthread_mutex_destroy(&table->data.death_mtx) || \
+	pthread_mutex_destroy(&table->data.eat_mtx) || \
+	pthread_mutex_destroy(&table->data.lastmeal_mtx))
+		return (f_error(MTX_ERROR2, ROJO));
+	return (0);
 }

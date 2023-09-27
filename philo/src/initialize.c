@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/22 20:04:37 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/27 21:42:56 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 //Main function that initializes mutexes, philos and threads
 int	init_allocs(t_table *table, char **argv)
 {
+	table->philos = NULL;
+	table->forks = NULL;
 	table->data.philo_amount = ft_atoi(argv[1]);
 	if (!table->data.philo_amount)
 		return (f_error(NO_PHILOS, ROJO));
@@ -47,7 +49,7 @@ int	init_philos(t_table *table)
 	i = -1;
 	table->philos = malloc(sizeof(t_philo) * table->data.philo_amount);
 	if (!table->philos)
-		return (0);
+		return (liberate(table));
 	while (++i < table->data.philo_amount)
 	{
 		table->philos[i].id = i + 1;
@@ -82,13 +84,18 @@ int	init_mutexes(t_table *table)
 	while (++i < len)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
-			return (0);
+			return (error_destroy(table, i, 0));
 	}
-	if (pthread_mutex_init(&table->data.start_mtx, NULL) || \
-	pthread_mutex_init(&table->data.print_mtx, NULL) || \
-	pthread_mutex_init(&table->data.death_mtx, NULL) || \
-	pthread_mutex_init(&table->data.eat_mtx, NULL))
-		return (0);
+	if (pthread_mutex_init(&table->data.start_mtx, NULL))
+		return (error_destroy(table, i, 0));
+	if (pthread_mutex_init(&table->data.print_mtx, NULL))
+		return (error_destroy(table, i, 1));
+	if (pthread_mutex_init(&table->data.death_mtx, NULL))
+		return (error_destroy(table, i, 2));
+	if (pthread_mutex_init(&table->data.eat_mtx, NULL))
+		return (error_destroy(table, i, 3));
+	if (pthread_mutex_init(&table->data.lastmeal_mtx, NULL))
+		return (error_destroy(table, i, 4));
 	return (1);
 }
 
@@ -98,15 +105,21 @@ int	init_threads(t_table *table)
 {
 	int	i;
 	int	len;
+	int	error;
 
 	i = -1;
+	error = 0;
 	len = table->data.philo_amount;
 	pthread_mutex_lock(&table->data.start_mtx);
-	while (++i < len)
+	while (++i < len && !error)
+		error = pthread_create(&table->philos[i].thread, \
+		NULL, philo_thread, (void *)&table->philos[i]);
+	if (error || pthread_create(&table->watcher, \
+	NULL, sisyphus_watcher, (void *)table))
 	{
-		if (pthread_create(&table->philos[i].thread, \
-		NULL, philo_thread, (void *)&table->philos[i]))
-			return (0);
+		starvation(&table->philos[0]);
+		pthread_mutex_unlock(&table->data.start_mtx);
+		return (liberate(table));
 	}
 	table->data.start_time = current_time();
 	i = -1;

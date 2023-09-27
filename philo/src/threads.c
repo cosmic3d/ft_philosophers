@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/26 21:50:38 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/27 21:56:27 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	*philo_thread(void *_philo)
 	philo = (t_philo *)_philo;
 	pthread_mutex_lock(&philo->data->start_mtx);
 	pthread_mutex_unlock(&philo->data->start_mtx);
+	if (some1died(philo))
+		return (NULL);
 	if (philo->data->death_time == 0)
 		if (check_death_or_full(philo))
 			return (NULL);
@@ -42,8 +44,6 @@ void	*philo_thread(void *_philo)
 //In this function I manage all the logic behind the philosophers eating
 int	philo_eat(t_philo *philo)
 {
-	while (*(int *)philo->leftfork && !some1died(philo))
-		wait_x(1, philo);//ARREGLAR ESTA MIERDA
 	pthread_mutex_lock(philo->leftfork);
 	if (!print_fork_grabbed(philo))
 		return (drop_forks(philo, 1, 0));
@@ -57,9 +57,13 @@ int	philo_eat(t_philo *philo)
 		return (drop_forks(philo, 1, 1));
 	if (check_death_or_full(philo) || some1died(philo))
 		return (drop_forks(philo, 1, 1));
+	pthread_mutex_lock(&philo->data->lastmeal_mtx);
 	philo->last_meal = current_time();
+	pthread_mutex_unlock(&philo->data->lastmeal_mtx);
 	philo->state = ST_EATING;
+	pthread_mutex_lock(&philo->data->eat_mtx);
 	philo->times_eaten++;
+	pthread_mutex_unlock(&philo->data->eat_mtx);
 	if (!print_state(philo))
 		return (drop_forks(philo, 1, 1));
 	wait_x(philo->data->eat_time, philo);
@@ -72,7 +76,10 @@ int	philo_eat(t_philo *philo)
 //This way we check if a philosopher died or if they are all full
 int	check_death_or_full(t_philo *philo)
 {
-	if (time_since(philo->last_meal) >= philo->data->death_time && \
+	int	debug;
+
+	debug = time_since(check_last_meal(philo));
+	if (debug >= philo->data->death_time && \
 	!some1died(philo))
 		return (check_death(philo));
 	pthread_mutex_lock(&philo->data->eat_mtx);
