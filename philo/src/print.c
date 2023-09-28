@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 03:31:08 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/27 22:28:45 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/28 23:10:04 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	printf_color(char *error, char *color, pthread_mutex_t *mutex)
 		{
 			if (mutex)
 				pthread_mutex_unlock(mutex);
-			write(STDOUT_FILENO, PRINTF_ERROR, 46);
+			write(STDERR_FILENO, PRINTF_ERROR, 46);
 			return (0);
 		}
 	}
@@ -34,92 +34,60 @@ int	printf_color(char *error, char *color, pthread_mutex_t *mutex)
 //the code with a mutex to prevent message mixing
 int	print_state(t_philo *philo)
 {
-	if (some1died(philo) || philo->state == ST_DEAD)
-		return (0);
-	pthread_mutex_lock(&philo->data->print_mtx);
+	//pthread_mutex_lock(&philo->data->print_mtx);
 	if (some1died(philo))
 	{
 		pthread_mutex_unlock(&philo->data->print_mtx);
 		return (0);
 	}
-	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
-	time_since(philo->data->start_time)) < 0 || \
-	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
-	print_zeros(philo->id, philo->data->philo_amount)) < 0)
-	{
-		pthread_mutex_unlock(&philo->data->print_mtx);
-		write(STDOUT_FILENO, PRINTF_ERROR, 46);
-		return (0);
-	}
+	//printf("%lld %s", time_since(philo->data->start_time), PHL_SLEEP);
+	//pthread_mutex_unlock(&philo->data->print_mtx);
+	//return (1);
+	printf("%lld %i", time_since(philo->data->start_time), philo->id);
+	// printf("\t%lld ms🗣 [%i]\t%s", \
+	// time_since(philo->data->start_time),  philo->id, PHL_SLEEP);
+	// if (philo->state == ST_EATING)
+	// 	return (printf_color(PHL_EAT, VERDE, &philo->data->print_mtx));
+	// else if (philo->state == ST_SLEEPING)
+	// 	return (printf_color(PHL_SLEEP, AZUL, &philo->data->print_mtx));
+	// else if (philo->state == ST_THINKING)
+	// 	return (printf_color(PHL_THINK, CYAN, &philo->data->print_mtx));
 	if (philo->state == ST_EATING)
-		return (printf_color(PHL_EAT, VERDE, &philo->data->print_mtx));
+		printf(PHL_EAT);
 	else if (philo->state == ST_SLEEPING)
-		return (printf_color(PHL_SLEEP, AZUL, &philo->data->print_mtx));
+		printf(PHL_SLEEP);
 	else if (philo->state == ST_THINKING)
-		return (printf_color(PHL_THINK, CYAN, &philo->data->print_mtx));
+		printf(PHL_THINK);
+	//pthread_mutex_unlock(&philo->data->print_mtx);
 	return (1);
 }
 
 //Prints that X philosophers has grabbed a fork
 int	print_fork_grabbed(t_philo *philo)
 {
-	if (some1died(philo))
-		return (0);
-	pthread_mutex_lock(&philo->data->print_mtx);
+	//pthread_mutex_lock(&philo->data->print_mtx);
 	if (some1died(philo))
 	{
 		pthread_mutex_unlock(&philo->data->print_mtx);
 		return (0);
 	}
-	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", \
-	time_since(philo->data->start_time)) < 0 || \
-	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
-	print_zeros(philo->id, philo->data->philo_amount)) < 0)
-	{
-		pthread_mutex_unlock(&philo->data->print_mtx);
-		write(STDOUT_FILENO, PRINTF_ERROR, 46);
-		return (0);
-	}
-	return (printf_color(PHL_FORK, MAGENTA, &philo->data->print_mtx));
+	printf("%lld %i", time_since(philo->data->start_time), philo->id);
+	// printf("\t%lld ms🗣 [%i]\t%s",  \
+	// time_since(philo->data->start_time),  philo->id, PHL_FORK);
+	// pthread_mutex_unlock(&philo->data->print_mtx);
+	// return (1);
+	// printf("%s\t%lld ms%s🗣 [%i]\t", MAGENTA, \
+	// time_since(philo->data->start_time), VERDE, philo->id);
+	// return (printf_color(PHL_FORK, MAGENTA, &philo->data->print_mtx));
+	printf(PHL_FORK);
+	//pthread_mutex_unlock(&philo->data->print_mtx);
+	return (1);
 }
 
 //Prints the death of a philosopher
 int	print_death(t_philo *philo, long long timestamp)
 {
 	pthread_mutex_lock(&philo->data->print_mtx);
-	if (printf(MAGENTA) < 0 || printf("\t%lld ms\t", timestamp) < 0 || \
-	printf(VERDE) < 0 || printf("🗣 [") < 0 || printf("%i]\t", \
-	print_zeros(philo->id, philo->data->philo_amount)) < 0)
-	{
-		pthread_mutex_unlock(&philo->data->print_mtx);
-		write(STDOUT_FILENO, PRINTF_ERROR, 46);
-		return (0);
-	}
+	printf("%lld %i", timestamp, philo->id);
 	return (printf_color(PHL_DEAD, ROJO, &philo->data->print_mtx));
-}
-
-//Prints a number of zeros in front of the number
-//so the tabs are consistent. Just a fancy touch
-int	print_zeros(int num, int philos)
-{
-	int	max_digits;
-	int	tmp_num;
-
-	max_digits = 1;
-	tmp_num = num;
-	if (philos < 10)
-		return (num);
-	while (philos >= 10)
-	{
-		philos /= 10;
-		max_digits++;
-	}
-	while (num)
-	{
-		num /= 10;
-		max_digits--;
-	}
-	while (max_digits--)
-		printf_color("0", "", NULL);
-	return (tmp_num);
 }

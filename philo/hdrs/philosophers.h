@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/27 22:18:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:38:10 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int			check_death(t_philo *philo);
 int			drop_forks(t_philo *philo, int left, int right);
 int			some1died(t_philo *philo);
 void		starvation(t_philo *philo);
-int			check_last_meal(t_philo *philo);
+long long	check_last_meal(t_philo *philo);
 int			error_destroy(t_table *table, int i, int j);
 //Sisyphus watcher
 void		*sisyphus_watcher(void *_table);

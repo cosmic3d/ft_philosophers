@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 19:04:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/27 22:19:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/28 22:58:15 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,14 @@ void	*philo_thread(void *_philo)
 	if (some1died(philo))
 		return (NULL);
 	if (philo->data->death_time == 0)
-		if (check_death_or_full(philo))
-			return (NULL);
+		return (NULL);
 	if (philo->id % 2 == 0)
 		wait_x((philo->data->eat_time));
 	while (!some1died(philo))
 	{
-		if (!philo_eat(philo) || some1died(philo))
+		if (!philo_eat(philo))
 			return (NULL);
-		if (check_death_or_full(philo) || !print_state(philo))
+		if (!print_state(philo))
 			return (NULL);
 		wait_x(philo->data->sleep_time);
 		philo->state = ST_THINKING;
@@ -55,20 +54,20 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_lock(philo->rightfork);
 	if (!print_fork_grabbed(philo))
 		return (drop_forks(philo, 1, 1));
-	if (check_death_or_full(philo) || some1died(philo))
+	if (some1died(philo))
 		return (drop_forks(philo, 1, 1));
 	pthread_mutex_lock(&philo->data->lastmeal_mtx);
 	philo->last_meal = current_time();
 	pthread_mutex_unlock(&philo->data->lastmeal_mtx);
 	philo->state = ST_EATING;
-	pthread_mutex_lock(&philo->data->eat_mtx);
-	philo->times_eaten++;
-	pthread_mutex_unlock(&philo->data->eat_mtx);
 	if (!print_state(philo))
 		return (drop_forks(philo, 1, 1));
+	philo->times_eaten++;
+	if (philo->times_eaten == philo->data->hunger)
+		philo->philo_full = 1;
 	wait_x(philo->data->eat_time);
-	if (some1died(philo))
-		return (drop_forks(philo, 1, 1));
+	// if (some1died(philo))
+	// 	return (drop_forks(philo, 1, 1));
 	philo->state = ST_SLEEPING;
 	return (drop_forks(philo, 1, 1) + 1);
 }
@@ -82,20 +81,17 @@ int	check_death_or_full(t_philo *philo)
 	if (debug >= philo->data->death_time && \
 	!some1died(philo))
 		return (check_death(philo));
-	pthread_mutex_lock(&philo->data->eat_mtx);
-	if (!philo->philo_full && philo->times_eaten >= philo->data->hunger)
+	if (philo->philo_full)
 	{
-		philo->philo_full = 1;
+		philo->philo_full = 0;
 		philo->data->philos_full++;
 	}
-	if (philo->data->philos_full == philo->data->philo_amount \
-	&& philo->data->hunger != -1)
+	if (philo->data->hunger != -1 && philo->data->philos_full == \
+	philo->data->philo_amount)
 	{
 		starvation(philo);
-		pthread_mutex_unlock(&philo->data->eat_mtx);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->data->eat_mtx);
 	return (0);
 }
 
@@ -104,7 +100,6 @@ int	check_death(t_philo *philo)
 {
 	if (some1died(philo))
 		return (1);
-	philo->state = ST_DEAD;
 	starvation(philo);
 	print_death(philo, time_since(philo->data->start_time));
 	return (1);
