@@ -6,28 +6,16 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:40:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/28 22:56:50 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/29 21:03:31 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdrs/philosophers.h"
 
-void	ft_putnbr_fd(int n)
-{
-	char	ch;
-
-	if (n > 9)
-		ft_putnbr_fd(n / 10);
-	ch = (n % 10) + '0';
-	write(1, &ch, 1);
-}
-
 //In case some philosopher dies and we are still inside a function,
 // we will unlock the forks mutexes so later on I can destroy them correctly
 int	drop_forks(t_philo *philo, int left, int right)
 {
-	// ft_putnbr_fd(philo->id);
-	// write(1, "\n", 1);
 	if (left)
 		pthread_mutex_unlock(philo->leftfork);
 	if (right)
@@ -57,6 +45,7 @@ void	starvation(t_philo *philo)
 	return ;
 }
 
+//This way we check the value of last meal without having any data races
 long long	check_last_meal(t_philo *philo)
 {
 	long long	_lastmeal;
@@ -86,7 +75,7 @@ int	error_destroy(t_table *table, int i, int j)
 		return (f_error(MTX_ERROR2, ROJO));
 	if (j >= 3 && pthread_mutex_destroy(&table->data.death_mtx))
 		return (f_error(MTX_ERROR2, ROJO));
-	if (j == 4 && pthread_mutex_destroy(&table->data.lastmeal_mtx))
+	if (j == 4 && pthread_mutex_destroy(&table->data.eat_mtx))
 		return (f_error(MTX_ERROR2, ROJO));
 	return (0);
 }

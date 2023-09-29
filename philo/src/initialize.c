@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:23:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/27 21:42:56 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/29 21:01:30 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	init_allocs(t_table *table, char **argv)
 	if (!table->data.hunger)
 		return (f_error(PHILOS_FULL, VERDE));
 	if (!table->data.eat_time || !table->data.sleep_time)
-		return (f_error(WRONG_INPUT, VERDE));
+		return (f_error(WRONG_INPUT, GROC));
 	if (!init_mutexes(table))
 		return (f_error(MTX_ERROR, ROJO));
 	if (!init_philos(table))

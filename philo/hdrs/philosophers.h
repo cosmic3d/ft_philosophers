@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:13:02 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/28 17:38:10 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/29 21:03:56 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void		wait_x(int time);
 int			liberate(t_table *table);
 //Print
 
-int			printf_color(char *error, char *color, pthread_mutex_t *mutex);
 int			print_state(t_philo *philo);
 int			print_fork_grabbed(t_philo *philo);
 int			print_death(t_philo *philo, long long timestamp);
@@ -106,6 +105,7 @@ void		*philo_thread(void *_philo);
 int			philo_eat(t_philo *philo);
 int			check_death_or_full(t_philo *philo);
 int			check_death(t_philo *philo);
+int			alone_again(t_philo *philo);
 //Mutex utils
 
 int			drop_forks(t_philo *philo, int left, int right);

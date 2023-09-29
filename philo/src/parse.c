@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:44:22 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/08/28 21:51:55 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:55:32 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,14 @@
 int	ft_atoi(const char *str)
 {
 	int	i;
-	int	n;
 
 	i = 0;
-	n = 1;
-	while (*str == ' ' || *str == '\n' || *str == '\v' || *str == '\t'
-		|| *str == '\f' || *str == '\r')
-		str++;
-	if (*str == '-')
-	{
-		n = -1;
-		str++;
-	}
-	else if (*str == '+')
-		str++;
 	while (*str >= '0' && *str <= '9')
 	{
 		i = i * 10 + (*str - '0');
 		str++;
 	}
-	return (i * n);
+	return (i);
 }
 
 //Checks that the string only contains the allowed characters

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 20:34:55 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/09/28 20:22:31 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:22:32 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,4 @@
 # define PHL_THINK " is thinking\n"
 # define PHL_DEAD " died\n"
 # define PHL_FORK " has taken a fork\n"
-// # define PHL_EAT "🍝 is eating 🍝\n"
-// # define PHL_SLEEP "💤 is sleeping 💤\n"
-// # define PHL_THINK "🧠 is thinking 🧠\n"
-// # define PHL_DEAD "☠️  died ☠️\033[0m\n"
-// # define PHL_FORK "🍴 has taken a fork 🍴\n"
 #endif
